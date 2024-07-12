@@ -51,13 +51,13 @@ VectorXd Node::delpsi(long double x, long double y, int localNodeIndex) {
 }
 
 long double Node::int1(long double x, long double y, int alpha, int beta) {
-    return delpsi(x, y, alpha).dot(delpsi(x, y, beta));
+    return this->delpsi(x, y, alpha).dot(this->delpsi(x, y, beta));
 }
 
 long double Node::int2(long double x, long double y, int alpha, int beta) {
-    return psi(x, y, alpha) * psi(x, y, beta) * delf(x, y);
+    return this->psi(x, y, alpha) * this->psi(x, y, beta) * delf(x, y);
 }
 
 long double Node::int3(long double x, long double y, int alpha, int beta) {
-    return psi(x, y, alpha) * f(x, y);
+    return this->psi(x, y, alpha) * this->f(x, y);
 }

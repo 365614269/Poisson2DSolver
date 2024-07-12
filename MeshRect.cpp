@@ -37,7 +37,7 @@ int MeshRect::Tb(int localNodeIndex, int i, int j) {
     return x * (this->Nx + 1) + y;
 }
 
-void MeshRect::addStiffness(Node node) {
+void MeshRect::addAF(Node node) {
     int Nlb = 4;
     long double ans1, ans2, ans3;
     long double x1,x2,y1,y2;
@@ -49,6 +49,7 @@ void MeshRect::addStiffness(Node node) {
 
     for (int alpha = 0; alpha < Nlb; alpha++) {
         ans3 = 0;
+
         for (int beta = 0; beta < Nlb; beta++) {
             ans1 = integral(&Node::int1, alpha, beta, x1, x2, y1, y2, node);
             ans2 = integral(&Node::int2, alpha, beta, x1, x2, y1, y2, node);
@@ -58,16 +59,17 @@ void MeshRect::addStiffness(Node node) {
 
             this->stiffness(Tb(beta, node.i, node.j), Tb(alpha, node.i, node.j)) += ans;
         }
+        
         ans3 += integral(&Node::int3, alpha, alpha, x1, x2, y1, y2, node);
         this->Fv(Tb(alpha, node.i, node.j)) += ans3;
     }
 }
 
-void MeshRect::calculateStiffness() {
+void MeshRect::calculateAF() {
     for (int i = 0; i < this->Ny; i++) {
         for (int j = 0; j < this->Nx; j++) {
             Node node = this->getNode(i, j);
-            this->addStiffness(node);
+            this->addAF(node);
         }
     }
 }

@@ -27,7 +27,7 @@ int main() {
     if (shape == "rectangle") {
         VectorXd U = VectorXd::Ones((Nx + 1) * (Ny + 1));
         MeshRect mesh = MeshRect(lx, ly, Nx, Ny, f, delf, U);
-        mesh.calculateStiffness();
+        mesh.calculateAF();
         mesh.displayStiffness();
         mesh.displayF();
     }

@@ -22,8 +22,8 @@ class MeshRect {
         Node getNode(int, int);
         int exchangeIndex(int, int);
         int Tb(int, int, int);
-        void addStiffness(Node);
-        void calculateStiffness();
+        void addAF(Node);
+        void calculateAF();
         void displayStiffness();
         void displayF();
 };
