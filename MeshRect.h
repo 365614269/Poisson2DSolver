@@ -8,13 +8,13 @@
 class MeshRect {
     private : 
         long double lx,ly;
-        // long double (*f) (long double, long double);
-        // long double (*delf) (long double, long double);
+        long double (*f) (long double, long double);
+        long double (*delf) (long double, long double);
         int Nx,Ny;
         Node*** elements;
         Eigen::MatrixXd stiffness;
     public :
-        MeshRect(long double, long double, int, int);
+        MeshRect(long double, long double, int, int, long double (*)(long double, long double), long double (*)(long double, long double));
         Node getNode(int, int);
         int exchangeIndex(int, int);
         int Tb(int, int, int);

@@ -13,19 +13,19 @@ int Nx = 4, Ny = 3;
 
 string shape = "rectangle";
 
-// long double f(long double x, long double y) {
-//     return 1;
-// }
+long double f(long double x, long double y) {
+    return 1;
+}
 
-// long double delf(long double x, long double y) {
-//     return 0;
-// }
+long double delf(long double x, long double y) {
+    return 0;
+}
 
 int main() {
     // Input for the attributes omitted
 
     if (shape == "rectangle") {
-        MeshRect mesh = MeshRect(lx, ly, Nx, Ny);
+        MeshRect mesh = MeshRect(lx, ly, Nx, Ny, f, delf);
         mesh.calculateStiffness();
         mesh.displayStiffness();
     }

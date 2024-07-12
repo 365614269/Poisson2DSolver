@@ -3,13 +3,13 @@
 using namespace std;
 using Eigen::MatrixXd;
 
-MeshRect::MeshRect(long double l_x, long double l_y, int N_x, int N_y) {
+MeshRect::MeshRect(long double l_x, long double l_y, int N_x, int N_y, long double (*f_)(long double, long double), long double (*delf_)(long double, long double)) {
     this->lx = l_x;
     this->ly = l_y;
     this->Nx = N_x;
     this->Ny = N_y;
-    // this->f = f_;
-    // this->delf = delf_;
+    this->f = f_;
+    this->delf = delf_;
     this->elements = new Node**[Ny];
     this->stiffness = MatrixXd::Zero((this->Nx + 1) * (this->Ny + 1), (this->Nx + 1) * (this->Ny + 1));
 
@@ -17,7 +17,7 @@ MeshRect::MeshRect(long double l_x, long double l_y, int N_x, int N_y) {
         this->elements[i] = new Node*[this->Nx];
 
         for(int j = 0; j < Nx; ++j){
-            this->elements[i][j] = new Node(this->lx / this->Nx, this->ly / this->Ny, this->Ny, i, j);
+            this->elements[i][j] = new Node(this->lx / this->Nx, this->ly / this->Ny, this->Ny, i, j, this->delf);
         }
     }
 }
