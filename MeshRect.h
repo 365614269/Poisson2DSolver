@@ -5,6 +5,9 @@
 #include "integrate2D.h"
 #include "Node.h"
 
+using Eigen::MatrixXd;
+using Eigen::VectorXd;
+
 class MeshRect {
     private : 
         long double lx,ly;
@@ -12,9 +15,10 @@ class MeshRect {
         long double (*delf) (long double, long double);
         int Nx,Ny;
         Node*** elements;
-        Eigen::MatrixXd stiffness;
+        MatrixXd stiffness;
+        VectorXd Uv,Fv;
     public :
-        MeshRect(long double, long double, int, int, long double (*)(long double, long double), long double (*)(long double, long double));
+        MeshRect(long double, long double, int, int, long double (*)(long double, long double), long double (*)(long double, long double), VectorXd);
         Node getNode(int, int);
         int exchangeIndex(int, int);
         int Tb(int, int, int);

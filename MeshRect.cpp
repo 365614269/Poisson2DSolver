@@ -2,14 +2,17 @@
 
 using namespace std;
 using Eigen::MatrixXd;
+using Eigen::VectorXd;
 
-MeshRect::MeshRect(long double l_x, long double l_y, int N_x, int N_y, long double (*f_)(long double, long double), long double (*delf_)(long double, long double)) {
+MeshRect::MeshRect(long double l_x, long double l_y, int N_x, int N_y, long double (*f_)(long double, long double), long double (*delf_)(long double, long double), VectorXd U_) {
     this->lx = l_x;
     this->ly = l_y;
     this->Nx = N_x;
     this->Ny = N_y;
     this->f = f_;
     this->delf = delf_;
+    this->Uv = U_;
+    this->Fv = VectorXd::Zero((Nx + 1) * (Ny + 1));
     this->elements = new Node**[Ny];
     this->stiffness = MatrixXd::Zero((this->Nx + 1) * (this->Ny + 1), (this->Nx + 1) * (this->Ny + 1));
 
@@ -17,7 +20,7 @@ MeshRect::MeshRect(long double l_x, long double l_y, int N_x, int N_y, long doub
         this->elements[i] = new Node*[this->Nx];
 
         for(int j = 0; j < Nx; ++j){
-            this->elements[i][j] = new Node(this->lx / this->Nx, this->ly / this->Ny, this->Ny, i, j, this->delf);
+            this->elements[i][j] = new Node(this->lx / this->Nx, this->ly / this->Ny, this->Ny, i, j, this->f, this->delf);
         }
     }
 }
@@ -36,6 +39,7 @@ int MeshRect::Tb(int localNodeIndex, int i, int j) {
 
 void MeshRect::addStiffness(Node node) {
     int Nlb = 4;
+    long double ans1, ans2, ans3;
 
     for (int alpha = 0; alpha < Nlb; alpha++) {
         for (int beta = 0; beta < Nlb; beta++) {
@@ -45,10 +49,12 @@ void MeshRect::addStiffness(Node node) {
             x2 = (node.j + 1) * node.h1;
             y1 = (node.Ny - node.i - 1) * node.h2;
             y2 = (node.Ny - node.i) * node.h2;
+            ans1 = integral(&Node::int1, alpha, beta, x1, x2, y1, y2, node);
+            ans2 = integral(&Node::int2, alpha, beta, x1, x2, y1, y2, node);
 
-            long double ans = -integral(&Node::int1, alpha, beta, x1, x2, y1, y2, node) - integral(&Node::int2, alpha, beta, x1, x2, y1, y2, node);
+            long double ans = -ans1-ans2;
 
-            stiffness(Tb(beta, node.i, node.j), Tb(alpha, node.i, node.j)) += ans;
+            this->stiffness(Tb(beta, node.i, node.j), Tb(alpha, node.i, node.j)) += ans;
         }
     }
 }

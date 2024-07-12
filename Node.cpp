@@ -3,12 +3,13 @@
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
-Node::Node(long double h_1, long double h_2, long double N_y, int i_, int j_, long double (*delf_)(long double, long double)) {
+Node::Node(long double h_1, long double h_2, long double N_y, int i_, int j_, long double (*f_)(long double, long double), long double (*delf_)(long double, long double)) {
     this->h1 = h_1;
     this->Ny = N_y;
     this->h2 = h_2;
     this->i = i_;
     this->j = j_;
+    this->f = f_;
     this->delf = delf_;
 }
 
@@ -55,4 +56,8 @@ long double Node::int1(long double x, long double y, int alpha, int beta) {
 
 long double Node::int2(long double x, long double y, int alpha, int beta) {
     return psi(x, y, alpha) * psi(x, y, beta) * delf(x, y);
+}
+
+long double Node::int3(long double x, long double y, int alpha, int beta) {
+    return psi(x, y, alpha) * f(x, y);
 }
