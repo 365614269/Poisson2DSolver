@@ -25,9 +25,10 @@ int main() {
     // Input for the attributes omitted
 
     if (shape == "rectangle") {
-        VectorXd U = VectorXd::Zero((Nx + 1) * (Ny + 1));
+        VectorXd U = VectorXd::Ones((Nx + 1) * (Ny + 1));
         MeshRect mesh = MeshRect(lx, ly, Nx, Ny, f, delf, U);
         mesh.calculateStiffness();
         mesh.displayStiffness();
+        mesh.displayF();
     }
 }

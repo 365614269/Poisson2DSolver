@@ -25,4 +25,5 @@ class MeshRect {
         void addStiffness(Node);
         void calculateStiffness();
         void displayStiffness();
+        void displayF();
 };
