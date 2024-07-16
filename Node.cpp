@@ -5,8 +5,8 @@ using Eigen::VectorXd;
 
 Node::Node(long double h_1, long double h_2, long double N_y, int i_, int j_, long double (*f_)(long double, long double), long double (*delf_)(long double, long double)) {
     this->h1 = h_1;
-    this->Ny = N_y;
     this->h2 = h_2;
+    this->Ny = N_y;
     this->i = i_;
     this->j = j_;
     this->f = f_;
