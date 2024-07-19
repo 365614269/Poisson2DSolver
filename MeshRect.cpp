@@ -4,30 +4,18 @@ using namespace std;
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
-MeshRect::MeshRect(long double l_x, long double l_y, int N_x, int N_y, long double (*f_)(long double, long double), long double (*delf_)(long double, long double), VectorXd U_) {
-    this->lx = l_x;
-    this->ly = l_y;
-    this->Nx = N_x;
-    this->Ny = N_y;
-    this->Nb = (N_x + 1) * (N_y + 1);
-    this->f = f_;
-    this->delf = delf_;
+MeshRect::MeshRect(VectorXd U_) {
     this->Uv = U_;
     this->Fv = VectorXd::Zero(Nb);
-    this->elements = new Node**[Ny];
     this->stiffness = MatrixXd::Zero(Nb, Nb);
 
-    for(int i = 0; i < Ny; ++i){
-        this->elements[i] = new Node*[this->Nx];
-
-        for(int j = 0; j < Nx; ++j){
-            this->elements[i][j] = new Node(this->lx / this->Nx, this->ly / this->Ny, this->Ny, i, j, this->f, this->delf);
-        }
+    for (int i = 0; i < Ne; i++) {
+        this->elements[i] = Element(i);
     }
 }
 
-Node MeshRect::getNode(int i, int j) {
-    return *(this->elements[i][j]);
+Element MeshRect::getElement(int n) {
+    return this->elements[n];
 }
 
 int MeshRect::Tb(int localNodeIndex, int i, int j) {
@@ -35,43 +23,53 @@ int MeshRect::Tb(int localNodeIndex, int i, int j) {
     int x = i + offset[localNodeIndex][0];
     int y = j + offset[localNodeIndex][1];
 
-    return x * (this->Nx + 1) + y;
+    return x * (Nx + 1) + y;  // exchange index
 }
 
-void MeshRect::addAF(Node node) {
-    int Nlb = 4;
+int MeshRect::Tb(int localNodeIndex, int n) {
+    int offset[4][2] = {{0, 0}, {0, 1}, {1, 1}, {1, 0}};
+    pair<int, int> pos = make_pair(n / Nx, n % Nx);  // exchange index
+
+    int x = pos.first + offset[localNodeIndex][0];
+    int y = pos.second + offset[localNodeIndex][1];
+
+    return x * (Nx + 1) + y;  // exchange index
+}
+
+void MeshRect::addAF(int elemIndex) {
+    Element element = this->getElement(elemIndex);
     long double ans1, ans2, ans3;
     long double x1,x2,y1,y2;
 
-    x1 = node.j * node.h1;
-    x2 = (node.j + 1) * node.h1;
-    y1 = (node.Ny - node.i - 1) * node.h2;
-    y2 = (node.Ny - node.i) * node.h2;
+    pair<int, int> index = make_pair(elemIndex / Nx, elemIndex % Nx);  // exchange index
+    x1 = index.second * h1;
+    x2 = (index.second + 1) * h1;
+    y1 = (Ny - index.first - 1) * h2;
+    y2 = (Ny - index.first) * h2;
 
     for (int alpha = 0; alpha < Nlb; alpha++) {
         ans3 = 0;
 
         for (int beta = 0; beta < Nlb; beta++) {
-            ans1 = integral(&Node::int1, alpha, beta, x1, x2, y1, y2, node);
-            ans2 = integral(&Node::int2, alpha, beta, x1, x2, y1, y2, node);
-            ans3 += ans1 * this->Uv(Tb(alpha, node.i, node.j));
+            ans1 = this->integrateDelpsi(element.nodes[beta], element.nodes[alpha], x1, x2, y1, y2);
+            ans2 = this->integratePsiDelF(element.nodes[alpha], element.nodes[beta], x1, x2, y1, y2);
+            ans3 += ans1 * this->Uv(Tb(beta, elemIndex));
 
             long double ans = -ans1-ans2;
-
-            this->stiffness(Tb(beta, node.i, node.j), Tb(alpha, node.i, node.j)) += ans;
+            this->stiffness(Tb(beta, elemIndex), Tb(alpha, elemIndex)) += ans;
         }
-        
-        ans3 += integral(&Node::int3, alpha, alpha, x1, x2, y1, y2, node);
-        this->Fv(Tb(alpha, node.i, node.j)) += ans3;
+
+        ans3 += this->integrateFPsi(element.nodes[alpha], x1, x2, y1, y2);
+        this->Fv(Tb(alpha, elemIndex)) += ans3;
     }
 }
 
 void MeshRect::calculateAF() {
-    for (int i = 0; i < this->Ny; i++) {
-        for (int j = 0; j < this->Nx; j++) {
-            Node node = this->getNode(i, j);
-            this->addAF(node);
-        }
+    this->stiffness = MatrixXd::Zero(Nb, Nb);
+    this->Fv = VectorXd::Zero(Nb);
+
+    for (int i = 0; i < Ne; i++) {
+        this->addAF(i);
     }
 }
 
@@ -91,20 +89,27 @@ void MeshRect::setU(VectorXd U_n) {
     this->Uv = U_n;
 }
 
-int MeshRect::exchangeIndex(int x, int y) {
-    return x * this->Nx + y;
+void MeshRect::applyBCtoU() {
+    for (int n = 0; n < Nb; n++) {
+        pair<int, int> index = make_pair(n / (Nx + 1), n % (Nx + 1));  // exchange index
+
+        if (index.second == 0 || index.second == Nx) {
+            long double x = index.second * h1;
+            long double y = Ny - index.first * h2;
+
+            if (this->g(x, y) != 999.9) {
+                this->Uv(n) = this->g(x, y);
+            }
+        }
+    }
 }
 
-pair<int, int> MeshRect::exchangeIndex(int n) {
-    return make_pair(n / (this->Nx + 1), n % (this->Nx + 1));
-}
+void MeshRect::applyBCtoDelU() {
+    for (int n = 0; n < Nb; n++) {
+        pair<int, int> index = make_pair(n / (Nx + 1), n % (Nx + 1));  // exchange index
 
-void MeshRect::applyBC() {
-    for (int n = 0; n < this->Nb; n++) {
-        pair<int, int> index = this->exchangeIndex(n);
-
-        if (index.first == 0 || index.first == this->Ny || index.second == 0 && index.second == this->Nx) {
-            for (int i = 0; i < this->Nb; i++) {
+        if (index.second == 0 || index.second == Nx) {
+            for (int i = 0; i < Nb; i++) {
                 this->stiffness(n,i) = 0;
             }
             this->stiffness(n,n) = 1;
@@ -113,35 +118,111 @@ void MeshRect::applyBC() {
     }
 }
 
-// pair<int, int> MeshRect::elem(long double x, long double y) {
-//     long double h1 = this->lx / this->Nx;
-//     long double h2 = this->ly / this->Ny;
+pair<int, int> MeshRect::elem(long double x, long double y) {
+    int a = (ly - y) / h2;
+    int b = x / h1;
 
-//     int a = (this->ly - y) / h2;
-//     int b = x / h1;
+    a = min(Ny, a);
+    b = min(Nx, b);
 
-//     a = Math.max(this->Ny, a);
-//     b = Math.max(this->Nx, b);
+    return make_pair(a, b);
+}
 
-//     return make_pair(a, b);
-// }
+long double MeshRect::u(long double x, long double y){
+    //find which element (x, y)is in.
+    pair<int, int> index = this->elem(x, y);
+    Element element = this->getElement(index.first * Nx + index.second);  // exchange index
 
-// long double MeshRect::u(long double x, long double y){
-//     //find which element (x, y)is in.
-//     pair<int, int> index = this->elem(x, y);
-//     Node node = this->getNode(index.first, index.second);
+    VectorXd v1(Nlb);
+    VectorXd v2(Nlb);
 
-//     int Nb = 4;
-//     VectorXd v1(Nb);
-//     VectorXd v2(Nb);
+    // add up the 4 components * shape functions of the 4 nodes
 
-//     // add up the 4 components * shape functions of the 4 nodes
-//     for (int i = 0; i < Nb; i++) {
-//         v1 << node.psi(x, y, Nb);
+    for (int i = 0; i < Nlb; i++) {
+        v1(i) = element.nodes[i].psi(x, y);
+        int n = Tb(i, index.first, index.second);
+        v2(i) = this->Uv(n);
+    }
 
-//         int n = Tb(i, index.first, index.second);
-//         v2 << this->Uv(n);
-//     }
+    return v1.dot(v2);
+}
 
-//     return v1.dot(v2);
-// }
+long double MeshRect::f(long double x, long double y) {
+    return exp(-this->u(x, y));
+    // return 0;
+}
+
+long double MeshRect::delf(long double x, long double y) {
+    return -exp(-this->u(x, y));
+    // return 0;
+}
+
+long double MeshRect::g(long double x, long double y) {
+    if (x == 0) {
+        return 1;
+    } else if (x == lx) {
+        return 2;
+    } else {
+        return 999.9;
+    }
+}
+
+long double MeshRect::integratePsiDelF(Node node1, Node node2, long double a1, long double b1, long double a2, long double b2) {
+    long double diff1 = (b1 - a1) / 2;
+    long double avg1 = (b1 + a1) / 2;
+    long double diff2 = (b2 - a2) / 2;
+    long double avg2 = (b2 + a2) / 2;
+
+    long double ans = 0;
+    long double x,y;
+
+    for (int i = 0; i < PRECISION; i++) {
+        for (int j = 0; j < PRECISION; j++) {
+            x = diff1 * abscissae[i] + avg1;
+            y = diff2 * abscissae[j] + avg2;
+            ans += weights[i] * weights[j] * node1.psi(x, y) * node2.psi(x, y) * this->delf(x, y);
+        }
+    }
+
+    return diff1 * diff2 * ans;
+}
+
+long double MeshRect::integrateDelpsi(Node node1, Node node2, long double a1, long double b1, long double a2, long double b2) {
+    long double diff1 = (b1 - a1) / 2;
+    long double avg1 = (b1 + a1) / 2;
+    long double diff2 = (b2 - a2) / 2;
+    long double avg2 = (b2 + a2) / 2;
+
+    long double ans = 0;
+    long double x,y;
+
+    for (int i = 0; i < PRECISION; i++) {
+        for (int j = 0; j < PRECISION; j++) {
+            x = diff1 * abscissae[i] + avg1;
+            y = diff2 * abscissae[j] + avg2;
+            ans += weights[i] * weights[j] * node1.delpsi(x, y).dot(node2.delpsi(x, y));
+        }
+    }
+
+    return diff1 * diff2 * ans;
+}
+
+long double MeshRect::integrateFPsi(Node node, long double a1, long double b1, long double a2, long double b2) {
+    long double diff1 = (b1 - a1) / 2;
+    long double avg1 = (b1 + a1) / 2;
+    long double diff2 = (b2 - a2) / 2;
+    long double avg2 = (b2 + a2) / 2;
+
+    long double ans = 0;
+    long double x,y;
+
+    for (int i = 0; i < PRECISION; i++) {
+        for (int j = 0; j < PRECISION; j++) {
+            x = diff1 * abscissae[i] + avg1;
+            y = diff2 * abscissae[j] + avg2;            
+            ans += weights[i] * weights[j] * node.psi(x, y) * this->f(x, y);
+        }
+    }
+
+    return diff1 * diff2 * ans;
+}

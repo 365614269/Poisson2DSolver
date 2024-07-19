@@ -1,37 +1,44 @@
 #pragma once
-#include <iostream>
-#include <utility>
-#include "eigen/Eigen/Dense"
-#include "integrate2D.h"
-#include "Node.h"
 
+#include "Element.h"
+#include "abscissae.h"
+#include "weights.h"
+#include <iostream>
+
+using namespace std;
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
 class MeshRect {
     private : 
-        long double lx,ly;
-        long double (*f) (long double, long double);
-        long double (*delf) (long double, long double);
-        int Nx,Ny,Nb;
-        Node*** elements;
+        Element elements[Ne];
         MatrixXd stiffness;
         VectorXd Uv,Fv;
     public :
-        MeshRect(long double, long double, int, int, long double (*)(long double, long double), long double (*)(long double, long double), VectorXd);
-        // long double u(long double, long double);
-        // pair<int, int> elem(long double, long double);
-        Node getNode(int, int);
-        int exchangeIndex(int, int);
-        pair<int, int> exchangeIndex(int);
+        MeshRect(VectorXd);
+        long double u(long double, long double);
+        long double f(long double, long double);
+        long double delf(long double, long double);
+        long double g(long double, long double);
+
+        pair<int, int> elem(long double, long double);
+
+        Element getElement(int);
         MatrixXd getStiffness();
         VectorXd getF();
         VectorXd getU();
         void setU(VectorXd);
+
         int Tb(int, int, int);
-        void addAF(Node);
+        int Tb(int, int);
+
+        void addAF(int);
         void calculateAF();
-        void displayStiffness();
-        void displayF();
-        void applyBC();
+        void applyBCtoU();
+        void applyBCtoDelU();
+
+        long double integratePsiDelF(Node, Node, long double, long double, long double, long double);
+        long double integrateDelpsi(Node, Node, long double, long double, long double, long double);
+        long double integrateFPsi(Node, long double, long double, long double, long double);
+
 };

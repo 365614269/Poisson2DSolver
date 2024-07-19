@@ -1,2 +1,4 @@
 eigen
 main
+.vscode
+*.txt

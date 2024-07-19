@@ -1,22 +1,18 @@
 #pragma once
 
+#include <iostream>
 #include "eigen/Eigen/Dense"
+#include "globals.h"
 
 using namespace std;
-
+using Eigen::VectorXd;
 
 class Node {
     public :
-        long double h1, h2;
-        int Ny;
-        int i,j;
-        long double (*f)(long double, long double);
-        long double (*delf)(long double, long double);
-
-        Node (long double, long double, long double, int, int, long double (*)(long double, long double), long double (*)(long double, long double));
-        long double psi(long double, long double, int);
-        Eigen::VectorXd delpsi(long double, long double, int);
-        long double int1(long double, long double, int, int);
-        long double int2(long double, long double, int, int);
-        long double int3(long double, long double, int, int);
+        int elemIndex;
+        int localNodeIndex;
+        Node(int, int);
+        Node(); // Default constructor
+        long double psi(long double x, long double y);
+        VectorXd delpsi(long double x, long double y);
 };
