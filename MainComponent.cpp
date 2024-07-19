@@ -39,8 +39,6 @@ int main() {
             }
         }
 
-        VectorXd U = mesh.getU();
-
-        fout << U << endl;
+        mesh.output("2DPoisson.vtk");
     }
 }

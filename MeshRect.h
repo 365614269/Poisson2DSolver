@@ -4,6 +4,7 @@
 #include "abscissae.h"
 #include "weights.h"
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 using Eigen::MatrixXd;
@@ -41,4 +42,5 @@ class MeshRect {
         long double integrateDelpsi(Node, Node, long double, long double, long double, long double);
         long double integrateFPsi(Node, long double, long double, long double, long double);
 
+        void output(string);
 };

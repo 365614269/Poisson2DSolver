@@ -2,3 +2,4 @@ eigen
 main
 .vscode
 *.txt
+*.vtk

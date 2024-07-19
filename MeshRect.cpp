@@ -226,3 +226,49 @@ long double MeshRect::integrateFPsi(Node node, long double a1, long double b1, l
 
     return diff1 * diff2 * ans;
 }
+
+void MeshRect::output(string fileName) {
+    ofstream fout(fileName);
+
+    fout << "# vtk DataFile Version 3.0" << endl;
+    fout << "2D Poisson Equation Numeric Solution" << endl;
+    fout << "ASCII" << endl;
+    fout << endl;
+    fout << "DATASET UNSTRUCTURED_GRID" << endl;
+    fout << "POINTS " << Nb << " float" << endl;
+
+    for (int n = 0; n < Nb; n++) {
+        fout << (n % (Nx + 1)) * h1 << ' ' << (n / (Nx + 1)) * h2 << " 2" << endl;
+    }
+
+    fout << endl;
+    fout << "CELLS " << Ne << " " << 5*Ne << endl;
+
+    for (int n = 0; n < Ne; n++) {
+        fout << "4 ";
+
+        for (int i = 0; i < Nlb; i++) {
+            fout << Tb(i, n) << " ";
+        }
+
+        fout << endl;
+    }
+
+    fout << endl;
+    fout << "CELL_TYPES " << Ne << endl;
+    
+    for (int n = 0; n < Ne; n++) {
+        fout << 9 << endl;
+    }
+
+    fout << endl;
+    fout << "POINT_DATA " << Nb << endl;
+    fout << "SCALARS temprerature float 1" << endl;
+    fout << "LOOKUP_TABLE default" << endl;
+
+    for (int n = 0; n < Nb; n++) {
+        fout << this->Uv(n) << endl;
+    }
+
+    fout.close();
+}
