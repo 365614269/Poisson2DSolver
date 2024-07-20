@@ -16,7 +16,6 @@ bool EC(VectorXd delU, VectorXd U, VectorXd F) {
 
 int main() {
     if (shape == "rectangle") {
-        ofstream fout("ans.txt");
         MeshRect mesh = MeshRect(U_0);
         mesh.applyBCtoU();
 
