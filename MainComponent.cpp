@@ -10,18 +10,6 @@ long double u_0(long double x, long double y) {
     return exp(- x - y);
 }
 
-VectorXd getU_0() {
-    VectorXd U_0(Nb);
-    long double x, y;
-
-    for (int n = 0; n < Nb; n++) {
-        x = (n % (Nx + 1)) * h1;
-        y = (n / (Nx + 1)) * h2;
-        U_0(n) = u_0(x, y);
-    }
-
-    return U_0;
-}
 
 bool EC(VectorXd delU, VectorXd U, VectorXd F) {
     long double abserr = delU.norm() / U.norm();
@@ -33,7 +21,15 @@ bool EC(VectorXd delU, VectorXd U, VectorXd F) {
 
 int main() {
     if (shape == "rectangle") {
-        VectorXd U_0 = getU_0();
+        VectorXd U_0(Nb);
+        long double x, y;
+
+        for (int n = 0; n < Nb; n++) {
+            x = (n % (Nx + 1)) * h1;
+            y = (n / (Nx + 1)) * h2;
+            U_0(n) = u_0(x, y);
+        }
+
         MeshRect mesh = MeshRect(U_0);
         mesh.applyBCtoU();
 
@@ -43,11 +39,11 @@ int main() {
             mesh.calculateAF();
             mesh.applyBCtoDelU();
 
-            MatrixXd A = mesh.getStiffness();
-            VectorXd F = mesh.getF();
+            MatrixXd& A = mesh.getStiffness();
+            VectorXd& F = mesh.getF();
 
             VectorXd delU = A.colPivHouseholderQr().solve(F);
-            VectorXd U = mesh.getU();
+            VectorXd& U = mesh.getU();
             VectorXd U_new = U + delU;
             mesh.setU(U_new);
 

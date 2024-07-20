@@ -73,15 +73,15 @@ void MeshRect::calculateAF() {
     }
 }
 
-MatrixXd MeshRect::getStiffness() {
+MatrixXd& MeshRect::getStiffness() {
     return this->stiffness;
 }
 
-VectorXd MeshRect::getF() {
+VectorXd& MeshRect::getF() {
     return this->Fv;
 }
 
-VectorXd MeshRect::getU() {
+VectorXd& MeshRect::getU() {
     return this->Uv;
 }
 

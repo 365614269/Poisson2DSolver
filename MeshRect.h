@@ -25,9 +25,9 @@ class MeshRect {
         pair<int, int> elem(long double, long double);
 
         Element getElement(int);
-        MatrixXd getStiffness();
-        VectorXd getF();
-        VectorXd getU();
+        MatrixXd& getStiffness();
+        VectorXd& getF();
+        VectorXd& getU();
         void setU(VectorXd);
 
         int Tb(int, int, int);
