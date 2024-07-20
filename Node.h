@@ -8,9 +8,11 @@ using namespace std;
 using Eigen::VectorXd;
 
 class Node {
-    public :
+    private : 
         int elemIndex;
         int localNodeIndex;
+
+    public :
         Node(int, int);
         Node(); // Default constructor
         long double psi(long double x, long double y);

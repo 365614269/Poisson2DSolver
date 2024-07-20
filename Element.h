@@ -4,10 +4,13 @@
 using Eigen::VectorXd;
 
 class Element {
-    public :
+    private :
         int elemIndex;
         Node nodes[Nlb];
 
+    public :
         Element(int);
         Element(); // Default constructor
+        int getElemIndex();
+        Node& getNode(int);
 };

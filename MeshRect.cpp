@@ -51,16 +51,19 @@ void MeshRect::addAF(int elemIndex) {
     for (int alpha = 0; alpha < Nlb; alpha++) {
         ans3 = 0;
 
+        Node& alphaNode = element.getNode(alpha);
         for (int beta = 0; beta < Nlb; beta++) {
-            ans1 = this->integrateDelpsi(element.nodes[beta], element.nodes[alpha], x1, x2, y1, y2);
-            ans2 = this->integratePsiDelF(element.nodes[alpha], element.nodes[beta], x1, x2, y1, y2);
+            Node& betaNode = element.getNode(beta);
+
+            ans1 = this->integrateDelpsi(betaNode, alphaNode, x1, x2, y1, y2);
+            ans2 = this->integratePsiDelF(alphaNode, betaNode, x1, x2, y1, y2);
             ans3 += ans1 * this->Uv(Tb(beta, elemIndex));
 
             long double ans = -ans1-ans2;
             this->stiffness(Tb(beta, elemIndex), Tb(alpha, elemIndex)) += ans;
         }
 
-        ans3 += this->integrateFPsi(element.nodes[alpha], x1, x2, y1, y2);
+        ans3 += this->integrateFPsi(alphaNode, x1, x2, y1, y2);
         this->Fv(Tb(alpha, elemIndex)) += ans3;
     }
 }
@@ -138,7 +141,7 @@ long double MeshRect::u(long double x, long double y){
     // add up the 4 components * shape functions of the 4 nodes
 
     for (int i = 0; i < Nlb; i++) {
-        v1(i) = element.nodes[i].psi(x, y);
+        v1(i) = element.getNode(i).psi(x, y);
         int n = Tb(i, index.first, index.second);
         v2(i) = this->Uv(n);
     }
@@ -166,7 +169,7 @@ long double MeshRect::g(long double x, long double y) {
     }
 }
 
-long double MeshRect::integratePsiDelF(Node node1, Node node2, long double a1, long double b1, long double a2, long double b2) {
+long double MeshRect::integratePsiDelF(Node& node1, Node& node2, long double a1, long double b1, long double a2, long double b2) {
     long double diff1 = (b1 - a1) / 2;
     long double avg1 = (b1 + a1) / 2;
     long double diff2 = (b2 - a2) / 2;
@@ -186,7 +189,7 @@ long double MeshRect::integratePsiDelF(Node node1, Node node2, long double a1, l
     return diff1 * diff2 * ans;
 }
 
-long double MeshRect::integrateDelpsi(Node node1, Node node2, long double a1, long double b1, long double a2, long double b2) {
+long double MeshRect::integrateDelpsi(Node& node1, Node& node2, long double a1, long double b1, long double a2, long double b2) {
     long double diff1 = (b1 - a1) / 2;
     long double avg1 = (b1 + a1) / 2;
     long double diff2 = (b2 - a2) / 2;
@@ -206,7 +209,7 @@ long double MeshRect::integrateDelpsi(Node node1, Node node2, long double a1, lo
     return diff1 * diff2 * ans;
 }
 
-long double MeshRect::integrateFPsi(Node node, long double a1, long double b1, long double a2, long double b2) {
+long double MeshRect::integrateFPsi(Node& node, long double a1, long double b1, long double a2, long double b2) {
     long double diff1 = (b1 - a1) / 2;
     long double avg1 = (b1 + a1) / 2;
     long double diff2 = (b2 - a2) / 2;

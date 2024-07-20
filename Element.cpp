@@ -9,3 +9,11 @@ Element::Element(int elemIndex) {
 }
 
 Element::Element() {}
+
+int Element::getElemIndex() {
+    return this->elemIndex;
+}
+
+Node& Element::getNode(int localNodeIndex) {
+    return this->nodes[localNodeIndex];
+}
