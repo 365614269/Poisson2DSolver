@@ -242,7 +242,7 @@ void MeshRect::output(string fileName) {
     }
 
     fout << endl;
-    fout << "CELLS " << Ne << " " << 5*Ne << endl;
+    fout << "CELLS " << Ne << " " << (Nlb + 1) * Ne << endl;
 
     for (int n = 0; n < Ne; n++) {
         fout << "4 ";
