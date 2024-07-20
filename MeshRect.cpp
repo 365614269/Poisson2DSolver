@@ -4,7 +4,7 @@ using namespace std;
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
-MeshRect::MeshRect(VectorXd U_) {
+MeshRect::MeshRect(VectorXd& U_) {
     this->Uv = U_;
     this->Fv = VectorXd::Zero(Nb);
     this->delUv = VectorXd::Zero(Nb);
@@ -15,7 +15,7 @@ MeshRect::MeshRect(VectorXd U_) {
     }
 }
 
-Element MeshRect::getElement(int n) {
+Element& MeshRect::getElement(int n) {
     return this->elements[n];
 }
 

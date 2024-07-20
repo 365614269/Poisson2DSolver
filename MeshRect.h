@@ -23,7 +23,7 @@ class MeshRect {
 
         pair<int, int> elem(long double, long double);
 
-        Element getElement(int);
+        Element& getElement(int);
 
         int Tb(int, int, int);
         int Tb(int, int);
@@ -33,7 +33,7 @@ class MeshRect {
         long double integrateFPsi(Node&, long double, long double, long double, long double);
 
     public :
-        MeshRect(VectorXd);
+        MeshRect(VectorXd&);
         void applyBCtoU();
         void applyBCtoDelU();
         void addAF(int);
