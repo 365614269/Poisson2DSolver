@@ -6,6 +6,23 @@ using namespace std;
 using Eigen::VectorXd;
 using Eigen::MatrixXd;
 
+long double u_0(long double x, long double y) {
+    return exp(- x - y);
+}
+
+VectorXd getU_0() {
+    VectorXd U_0(Nb);
+    long double x, y;
+
+    for (int n = 0; n < Nb; n++) {
+        x = (n % (Nx + 1)) * h1;
+        y = (n / (Nx + 1)) * h2;
+        U_0(n) = u_0(x, y);
+    }
+
+    return U_0;
+}
+
 bool EC(VectorXd delU, VectorXd U, VectorXd F) {
     long double abserr = delU.norm() / U.norm();
     long double relerr = F.norm();
@@ -16,6 +33,7 @@ bool EC(VectorXd delU, VectorXd U, VectorXd F) {
 
 int main() {
     if (shape == "rectangle") {
+        VectorXd U_0 = getU_0();
         MeshRect mesh = MeshRect(U_0);
         mesh.applyBCtoU();
 

@@ -20,5 +20,4 @@ const int Ne = Nx * Ny;
 const int Nlb = 4;
 const long double h1 = lx / Nx;
 const long double h2 = ly / Ny;
-const VectorXd U_0 = VectorXd::Ones(Nb);
 const string shape = "rectangle";
