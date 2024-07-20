@@ -10,25 +10,21 @@ long double u_0(long double x, long double y) {
     return exp(- x - y);
 }
 
+void getU_0(VectorXd& U_0) {
+    long double x, y;
 
-bool EC(VectorXd delU, VectorXd U, VectorXd F) {
-    long double abserr = delU.norm() / U.norm();
-    long double relerr = F.norm();
-    cout << "Abs. Error: " << abserr << " ;;; Rel. Error: " << relerr << endl;
-
-    return (abserr < ABSOLUTE_TOLERANCE) && (relerr < RELATIVE_TOLERANCE);
+    for (int n = 0; n < Nb; n++) {
+        x = (n % (Nx + 1)) * h1;
+        y = (n / (Nx + 1)) * h2;
+        U_0(n) = u_0(x, y);
+    }
 }
 
 int main() {
     if (shape == "rectangle") {
         VectorXd U_0(Nb);
-        long double x, y;
 
-        for (int n = 0; n < Nb; n++) {
-            x = (n % (Nx + 1)) * h1;
-            y = (n / (Nx + 1)) * h2;
-            U_0(n) = u_0(x, y);
-        }
+        getU_0(U_0);
 
         MeshRect mesh = MeshRect(U_0);
         mesh.applyBCtoU();
@@ -39,15 +35,9 @@ int main() {
             mesh.calculateAF();
             mesh.applyBCtoDelU();
 
-            MatrixXd& A = mesh.getStiffness();
-            VectorXd& F = mesh.getF();
+            mesh.addDelU();
 
-            VectorXd delU = A.colPivHouseholderQr().solve(F);
-            VectorXd& U = mesh.getU();
-            VectorXd U_new = U + delU;
-            mesh.setU(U_new);
-
-            if (EC(delU, U, F)) {
+            if (mesh.endConditionMet()){
                 break;
             }
         }

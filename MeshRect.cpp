@@ -7,6 +7,7 @@ using Eigen::VectorXd;
 MeshRect::MeshRect(VectorXd U_) {
     this->Uv = U_;
     this->Fv = VectorXd::Zero(Nb);
+    this->delUv = VectorXd::Zero(Nb);
     this->stiffness = MatrixXd::Zero(Nb, Nb);
 
     for (int i = 0; i < Ne; i++) {
@@ -73,22 +74,6 @@ void MeshRect::calculateAF() {
     }
 }
 
-MatrixXd& MeshRect::getStiffness() {
-    return this->stiffness;
-}
-
-VectorXd& MeshRect::getF() {
-    return this->Fv;
-}
-
-VectorXd& MeshRect::getU() {
-    return this->Uv;
-}
-
-void MeshRect::setU(VectorXd U_n) {
-    this->Uv = U_n;
-}
-
 void MeshRect::applyBCtoU() {
     for (int n = 0; n < Nb; n++) {
         pair<int, int> index = make_pair(n / (Nx + 1), n % (Nx + 1));  // exchange index
@@ -116,6 +101,20 @@ void MeshRect::applyBCtoDelU() {
             this->Fv(n) = 0;
         }
     }
+}
+
+void MeshRect::addDelU() {
+    VectorXd delU = (this->stiffness).colPivHouseholderQr().solve(this->Fv);
+    this->delUv = delU;
+    this->Uv += delU;
+}
+
+bool MeshRect::endConditionMet() {
+    long double abserr = this->delUv.norm() / this->Uv.norm();
+    long double relerr = this->Fv.norm();
+    cout << "Abs. Error: " << abserr << " ;;; Rel. Error: " << relerr << endl;
+
+    return (abserr < ABSOLUTE_TOLERANCE) && (relerr < RELATIVE_TOLERANCE);
 }
 
 pair<int, int> MeshRect::elem(long double x, long double y) {

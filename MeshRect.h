@@ -14,7 +14,8 @@ class MeshRect {
     private : 
         Element elements[Ne];
         MatrixXd stiffness;
-        VectorXd Uv,Fv;
+        VectorXd Uv,delUv,Fv;
+
     public :
         MeshRect(VectorXd);
         long double u(long double, long double);
@@ -25,22 +26,20 @@ class MeshRect {
         pair<int, int> elem(long double, long double);
 
         Element getElement(int);
-        MatrixXd& getStiffness();
-        VectorXd& getF();
-        VectorXd& getU();
-        void setU(VectorXd);
 
         int Tb(int, int, int);
         int Tb(int, int);
-
-        void addAF(int);
-        void calculateAF();
-        void applyBCtoU();
-        void applyBCtoDelU();
 
         long double integratePsiDelF(Node, Node, long double, long double, long double, long double);
         long double integrateDelpsi(Node, Node, long double, long double, long double, long double);
         long double integrateFPsi(Node, long double, long double, long double, long double);
 
+        void applyBCtoU();
+        void applyBCtoDelU();
+        void addAF(int);
+        void calculateAF();
+        void addDelU();
+
+        bool endConditionMet();
         void output(string);
 };
