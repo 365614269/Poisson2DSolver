@@ -3,6 +3,7 @@
 #include "Element.h"
 #include "abscissae.h"
 #include "weights.h"
+#include "exprtk.hpp"
 #include <iostream>
 #include <fstream>
 
@@ -10,11 +11,21 @@ using namespace std;
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
+typedef exprtk::symbol_table<double> symbol_table;
+typedef exprtk::expression<double>   expression;
+typedef exprtk::parser<double>       parser;
+
 class MeshRect {
     private : 
         Element elements[Ne];
         MatrixXd stiffness;
         VectorXd Uv,delUv,Fv;
+        expression f_expr, delf_expr;
+
+        double u_val;
+
+        expression parse_f();
+        expression parse_delf();
 
         double u(double, double);
         double f(double, double);

@@ -21,3 +21,5 @@ const int Nlb = 4;
 const double h1 = lx / Nx;
 const double h2 = ly / Ny;
 const string shape = "rectangle";
+const string f_str = "exp(-u)";
+const string delf_str = "-exp(-u)";

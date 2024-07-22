@@ -9,6 +9,8 @@ MeshRect::MeshRect(VectorXd& U_) {
     this->Fv = VectorXd::Zero(Nb);
     this->delUv = VectorXd::Zero(Nb);
     this->stiffness = MatrixXd::Zero(Nb, Nb);
+    this->f_expr = this->parse_f();
+    this->delf_expr = this->parse_delf();
 
     for (int i = 0; i < Ne; i++) {
         this->elements[i] = Element(i);
@@ -149,14 +151,40 @@ double MeshRect::u(double x, double y){
     return v1.dot(v2);
 }
 
+expression MeshRect::parse_f() {
+    symbol_table symbols;
+    symbols.add_variable("u", this->u_val);
+
+    expression expr;
+    expr.register_symbol_table(symbols);
+
+    parser Parser;
+    Parser.compile(f_str, expr);
+
+    return expr;
+}
+
+expression MeshRect::parse_delf() {
+    symbol_table symbols;
+    symbols.add_variable("u", this->u_val);
+
+    expression expr;
+    expr.register_symbol_table(symbols);
+
+    parser Parser;
+    Parser.compile(delf_str, expr);
+
+    return expr;
+}
+
 double MeshRect::f(double x, double y) {
-    return exp(-this->u(x, y));
-    // return 0;
+    this->u_val = this->u(x, y);
+    return f_expr.value();
 }
 
 double MeshRect::delf(double x, double y) {
-    return -exp(-this->u(x, y));
-    // return 0;
+    this->u_val = this->u(x, y);
+    return delf_expr.value();
 }
 
 double MeshRect::g(double x, double y) {
