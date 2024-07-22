@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include "eigen/Eigen/Dense"
 #include "globals.h"
 
 using namespace std;
