@@ -83,7 +83,7 @@ void MeshRect::applyBCtoU() {
 
         if (index.second == 0 || index.second == Nx) {
             double x = index.second * h1;
-            double y = Ny - index.first * h2;
+            double y = (Ny - index.first) * h2;
 
             if (this->g(x, y) != 999.9) {
                 this->Uv(n) = this->g(x, y);
