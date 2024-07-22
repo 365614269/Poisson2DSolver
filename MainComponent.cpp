@@ -6,12 +6,12 @@ using namespace std;
 using Eigen::VectorXd;
 using Eigen::MatrixXd;
 
-long double u_0(long double x, long double y) {
+double u_0(double x, double y) {
     return exp(- x - y);
 }
 
 void getU_0(VectorXd& U_0) {
-    long double x, y;
+    double x, y;
 
     for (int n = 0; n < Nb; n++) {
         x = (n % (Nx + 1)) * h1;

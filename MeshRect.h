@@ -16,21 +16,21 @@ class MeshRect {
         MatrixXd stiffness;
         VectorXd Uv,delUv,Fv;
 
-        long double u(long double, long double);
-        long double f(long double, long double);
-        long double delf(long double, long double);
-        long double g(long double, long double);
+        double u(double, double);
+        double f(double, double);
+        double delf(double, double);
+        double g(double, double);
 
-        pair<int, int> elem(long double, long double);
+        pair<int, int> elem(double, double);
 
         Element& getElement(int);
 
         int Tb(int, int, int);
         int Tb(int, int);
 
-        long double integratePsiDelF(Node&, Node&, long double, long double, long double, long double);
-        long double integrateDelpsi(Node&, Node&, long double, long double, long double, long double);
-        long double integrateFPsi(Node&, long double, long double, long double, long double);
+        double integratePsiDelF(Node&, Node&, double, double, double, double);
+        double integrateDelpsi(Node&, Node&, double, double, double, double);
+        double integrateFPsi(Node&, double, double, double, double);
 
     public :
         MeshRect(VectorXd&);

@@ -15,6 +15,6 @@ class Node {
     public :
         Node(int, int);
         Node(); // Default constructor
-        long double psi(long double x, long double y);
-        VectorXd delpsi(long double x, long double y);
+        double psi(double x, double y);
+        VectorXd delpsi(double x, double y);
 };
