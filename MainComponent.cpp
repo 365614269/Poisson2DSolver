@@ -20,7 +20,7 @@ void getU_0(VectorXd& U_0) {
     }
 }
 
-int main() {
+int main(int argc, char *argv[]) {
     if (shape == "rectangle") {
         VectorXd U_0(Nb);
 
@@ -42,6 +42,6 @@ int main() {
             }
         }
 
-        mesh.output("2DPoisson.vtk");
+        mesh.output(argv[1]);
     }
 }
