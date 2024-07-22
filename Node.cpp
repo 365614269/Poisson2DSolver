@@ -1,4 +1,4 @@
-#include "Node.h"
+#include "include/Node.h"
 
 using namespace std;
 using Eigen::MatrixXd;

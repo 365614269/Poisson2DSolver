@@ -1,4 +1,4 @@
-#include "MeshRect.h"
+#include "include/MeshRect.h"
 
 using namespace std;
 using Eigen::MatrixXd;
