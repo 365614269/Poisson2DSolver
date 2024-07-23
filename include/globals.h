@@ -8,8 +8,6 @@ using namespace std;
 
 #define PRECISION 10
 #define MAX_ITERATIONS 10
-#define ABSOLUTE_TOLERANCE 10e-4
-#define RELATIVE_TOLERANCE 10e-4
 
 extern double lx;
 extern double ly;
@@ -30,3 +28,6 @@ extern string u0_str;
 extern string f_str;
 extern string delf_str;
 extern string output_file_dir;
+
+extern string BCValues;
+extern string BCNodes;

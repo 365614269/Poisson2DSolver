@@ -36,6 +36,8 @@ class MeshRect {
         double delf(double, double);
         double g(double, double);
 
+        static vector<string> split(string, string);
+
         pair<int, int> elem(double, double);
 
         Element& getElement(int);

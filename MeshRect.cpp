@@ -9,12 +9,28 @@ MeshRect::MeshRect(VectorXd& U_) {
     this->Fv = VectorXd::Zero(Nb);
     this->delUv = VectorXd::Zero(Nb);
     this->stiffness = MatrixXd::Zero(Nb, Nb);
+
     this->f_expr = this->parse_f();
     this->delf_expr = this->parse_delf();
 
     for (int i = 0; i < Ne; i++) {
         this->elements.push_back(Element(i));
     }
+}
+
+vector<string> MeshRect::split(string s, string delimiter) {
+    size_t pos_start = 0, pos_end, delim_len = delimiter.length();
+    string token;
+    vector<string> res;
+
+    while ((pos_end = s.find(delimiter, pos_start)) != string::npos) {
+        token = s.substr (pos_start, pos_end - pos_start);
+        pos_start = pos_end + delim_len;
+        res.push_back (token);
+    }
+
+    res.push_back (s.substr (pos_start));
+    return res;
 }
 
 Element& MeshRect::getElement(int n) {
@@ -80,17 +96,14 @@ void MeshRect::calculateAF() {
 }
 
 void MeshRect::applyBCtoU() {
-    for (int n = 0; n < Nb; n++) {
-        pair<int, int> index = make_pair(n / (Nx + 1), n % (Nx + 1));  // exchange index
+    vector<string> nodes = MeshRect::split(BCNodes, ",");
+    vector<string> values = MeshRect::split(BCValues, ",");
 
-        if (index.second == 0 || index.second == Nx) {
-            double x = index.second * h1;
-            double y = (Ny - index.first) * h2;
+    for (int i = 0; i < nodes.size(); i++) {
+        int node = stoi(nodes[i]);
+        double value = stof(values[i]);
 
-            if (this->g(x, y) != 999.9) {
-                this->Uv(n) = this->g(x, y);
-            }
-        }
+        this->Uv(node) = value;
     }
 }
 
@@ -115,11 +128,11 @@ void MeshRect::addDelU() {
 }
 
 bool MeshRect::endConditionMet() {
-    double abserr = this->delUv.norm() / this->Uv.norm();
-    double relerr = this->Fv.norm();
-    cout << "Abs. Error: " << abserr << " ;;; Rel. Error: " << relerr << endl;
+    double abs_err = this->delUv.norm() / this->Uv.norm();
+    double rel_err = this->Fv.norm();
+    cout << "Abs. Error: " << abs_err << " ;;; Rel. Error: " << rel_err << endl;
 
-    return (abserr < ABSOLUTE_TOLERANCE) && (relerr < RELATIVE_TOLERANCE);
+    return (abs_err < abs_tol) && (rel_err < rel_tol);
 }
 
 pair<int, int> MeshRect::elem(double x, double y) {

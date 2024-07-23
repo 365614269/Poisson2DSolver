@@ -11,6 +11,7 @@ int Nx, Ny;
 int Nb, Ne, Nlb;
 double h1, h2;
 string shape, u0_str, f_str, delf_str;
+string BCNodes, BCValues;
 double abs_tol, rel_tol;
 string output_file_dir;
 
@@ -31,6 +32,8 @@ void readFile(char* fileName) {
         else if (!strcmp(name, "ly")) ly = atof(value);
 		else if (!strcmp(name, "Nx")) Nx = atoi(value);
 		else if (!strcmp(name, "Ny")) Ny = atoi(value);
+        else if (!strcmp(name, "BCNodes")) BCNodes = value;
+        else if (!strcmp(name, "BCValues")) BCValues = value;
 		else if (!strcmp(name, "shape")) shape = value;
 		else if (!strcmp(name, "guess")) u0_str = value;
 		else if (!strcmp(name, "source")) f_str = value;
