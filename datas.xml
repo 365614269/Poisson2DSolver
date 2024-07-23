@@ -24,4 +24,4 @@
     
     <!-- Output file directory -->
     <Data name="output_file_dir" value="./2DPoisson.vtk"></Data>
-</Myconfig> 
+</Myconfig>

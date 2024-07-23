@@ -1,5 +1,4 @@
+*.vtk
+*.xml
 main
 .vscode
-*.txt
-*.vtk
-test.cpp

@@ -14,11 +14,11 @@ string shape, u0_str, f_str, delf_str;
 double abs_tol, rel_tol;
 string output_file_dir;
 
-void readFile(string fileName) {
+void readFile(char* fileName) {
 	xml_document<> doc;
 	xml_node<> * root_node;
 	// Read the xml file into a vector
-	ifstream theFile (fileName);
+	ifstream theFile(fileName);
 	vector<char> buffer((istreambuf_iterator<char>(theFile)), istreambuf_iterator<char>());
 	buffer.push_back('\0');
 	// Parse the buffer using the xml file parsing library into doc 
@@ -69,8 +69,8 @@ void getU_0(VectorXd& U_0) {
     }
 }
 
-int main() {
-    readFile("datas.xml");
+int main(int argc, char* argv[]) {
+    readFile(argv[0]);
 
     if (shape == "rectangle") {
         VectorXd U_0(Nb);
