@@ -50,7 +50,7 @@ void readFile(char* fileName) {
     h2 = ly / Ny;
 }
 
-void getU_0(VectorXd& U_0) {
+void setU_0(VectorXd& U_0) {
     double x,y;
     symbol_table symbols;
     symbols.add_variable("x", x);
@@ -75,7 +75,7 @@ int main(int argc, char* argv[]) {
     if (shape == "rectangle") {
         VectorXd U_0(Nb);
 
-        getU_0(U_0);
+        setU_0(U_0);
 
         MeshRect mesh = MeshRect(U_0);
         mesh.applyBCtoU();
