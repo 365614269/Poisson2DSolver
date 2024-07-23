@@ -11,16 +11,22 @@ using namespace std;
 #define ABSOLUTE_TOLERANCE 10e-4
 #define RELATIVE_TOLERANCE 10e-4
 
-const double lx = 2;
-const double ly = 1;
-const int Nx = 20;
-const int Ny = 10;
-const int Nb = (Nx + 1) * (Ny + 1);
-const int Ne = Nx * Ny;
-const int Nlb = 4;
-const double h1 = lx / Nx;
-const double h2 = ly / Ny;
-const string shape = "rectangle";
-const string u0_str = "exp(-x-y)";
-const string f_str = "exp(-u)";
-const string delf_str = "-exp(-u)";
+extern double lx;
+extern double ly;
+extern int Nx;
+extern int Ny;
+extern string shape;
+
+extern int Nb;
+extern int Ne;
+extern int Nlb;
+extern double h1;
+extern double h2; 
+
+extern double abs_tol;
+extern double rel_tol;
+
+extern string u0_str;
+extern string f_str;
+extern string delf_str;
+extern string output_file_dir;

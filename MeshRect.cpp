@@ -13,7 +13,7 @@ MeshRect::MeshRect(VectorXd& U_) {
     this->delf_expr = this->parse_delf();
 
     for (int i = 0; i < Ne; i++) {
-        this->elements[i] = Element(i);
+        this->elements.push_back(Element(i));
     }
 }
 

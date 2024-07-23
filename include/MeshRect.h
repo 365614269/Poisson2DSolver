@@ -4,8 +4,11 @@
 #include "abscissae.h"
 #include "weights.h"
 #include "exprtk.hpp"
+#include "rapidxml.hpp"
 #include <iostream>
 #include <fstream>
+#include <vector>
+#include "globals.h"
 
 using namespace std;
 using Eigen::MatrixXd;
@@ -17,7 +20,7 @@ typedef exprtk::parser<double>       parser;
 
 class MeshRect {
     private : 
-        Element elements[Ne];
+        vector<Element> elements;
         MatrixXd stiffness;
         VectorXd Uv,delUv,Fv;
         expression f_expr, delf_expr;

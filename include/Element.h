@@ -1,12 +1,13 @@
 #pragma once
 #include "Node.h"
+#include "globals.h"
 
 using Eigen::VectorXd;
 
 class Element {
     private :
         int elemIndex;
-        Node nodes[Nlb];
+        vector<Node> nodes;
 
     public :
         Element(int);

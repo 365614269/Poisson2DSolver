@@ -4,7 +4,7 @@ Element::Element(int elemIndex) {
     this->elemIndex = elemIndex;
 
     for (int i = 0; i < Nlb; i++) {
-        this->nodes[i] = Node(elemIndex, i);
+        this->nodes.push_back(Node(elemIndex, i));
     }
 }
 
