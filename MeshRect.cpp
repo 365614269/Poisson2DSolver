@@ -108,16 +108,17 @@ void MeshRect::applyBCtoU() {
 }
 
 void MeshRect::applyBCtoDelU() {
-    for (int n = 0; n < Nb; n++) {
-        pair<int, int> index = make_pair(n / (Nx + 1), n % (Nx + 1));  // exchange index
+    vector<string> nodes = MeshRect::split(BCNodes, ",");
+    vector<string> values = MeshRect::split(BCValues, ",");
 
-        if (index.second == 0 || index.second == Nx) {
-            for (int i = 0; i < Nb; i++) {
-                this->stiffness(n,i) = 0;
-            }
-            this->stiffness(n,n) = 1;
-            this->Fv(n) = 0;
+    for (int i = 0; i < nodes.size(); i++) {
+        int node = stoi(nodes[i]);
+        
+        for (int i = 0; i < Nb; i++) {
+            this->stiffness(node,i) = 0;
         }
+        this->stiffness(node,node) = 1;
+        this->Fv(node) = 0;
     }
 }
 

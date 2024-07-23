@@ -8,13 +8,13 @@
     <Data name="shape" value="rectangle"></Data>
 
     <!-- Dirichlet Boundary Conditions -->
-    <Data name="BCNodes" value="0,21,42,63,84,105,126,147,168,189,210,20,41,62,83,104,125,146,167,188,209,230"></Data>
-    <Data name="BCValues" value="1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2"></Data>
+    <Data name="BCNodes" value="0,21,42,63,84,105,125,146,167,188,209,230"></Data>
+    <Data name="BCValues" value="1000,1000,1000,1000,1000,1000,2000,2000,2000,2000,2000,2000"></Data>
 
     <!-- Input Functions -->
     <Data name="guess" value="exp(-x-y)"></Data>
-    <Data name="source" value="exp(-u)"></Data>
-    <Data name="source_derivative" value="-exp(-u)"></Data>
+    <Data name="source" value="-u"></Data>
+    <Data name="source_derivative" value="-1"></Data>
 
     <!-- Tolerance of error -->
     <Data name="abs_tol" value="1e-4"></Data>
