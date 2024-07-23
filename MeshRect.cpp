@@ -109,7 +109,6 @@ void MeshRect::applyBCtoU() {
 
 void MeshRect::applyBCtoDelU() {
     vector<string> nodes = MeshRect::split(BCNodes, ",");
-    vector<string> values = MeshRect::split(BCValues, ",");
 
     for (int i = 0; i < nodes.size(); i++) {
         int node = stoi(nodes[i]);
