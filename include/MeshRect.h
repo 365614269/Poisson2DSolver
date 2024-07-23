@@ -9,6 +9,7 @@
 #include <fstream>
 #include <vector>
 #include "globals.h"
+#include "rapidxml_utils.hpp"
 
 using namespace std;
 using Eigen::MatrixXd;

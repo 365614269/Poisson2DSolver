@@ -18,12 +18,9 @@ void readFile(char* fileName) {
 	xml_document<> doc;
 	xml_node<> * root_node;
 	// Read the xml file into a vector
-	ifstream theFile(fileName);
-	vector<char> buffer((istreambuf_iterator<char>(theFile)), istreambuf_iterator<char>());
-	buffer.push_back('\0');
-	// Parse the buffer using the xml file parsing library into doc 
-	doc.parse<0>(&buffer[0]);
-	// Find our root node
+    file<> theFile(fileName);
+    doc.parse<0>(theFile.data());
+
 	root_node = doc.first_node("MyConfig");
 	// Iterate over the data
 	for (xml_node<> * data_node = root_node->first_node("Data"); data_node; data_node = data_node->next_sibling()) {
@@ -70,7 +67,7 @@ void getU_0(VectorXd& U_0) {
 }
 
 int main(int argc, char* argv[]) {
-    readFile(argv[0]);
+    readFile(argv[1]);
 
     if (shape == "rectangle") {
         VectorXd U_0(Nb);
@@ -93,6 +90,6 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        mesh.output("2DPoisson.vtk");
+        mesh.output(output_file_dir);
     }
 }
