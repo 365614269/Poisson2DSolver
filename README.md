@@ -15,6 +15,7 @@ Note that $$u = g(x, y)$$ on the boundary as Dirichlet Boundary Condition and $$
 Neumann Boundary Condition is not considered in this project.
 
 # Getting started
+
 No dependencies other than your C++ compiler is needed. 
 
 To compile the code, go to the cloned directory and compile every .cpp file in the directory.
@@ -27,8 +28,13 @@ When you run the executable, give the directory to the configuration file as a c
 
 `$ ./main /path/to/your_config.xml`
 
+If you just want to use the template file **data.xml**, use the command 
+
+`$ ./main datas.xml`
+
 # Configuration
-At this point, you might be curious about how to configure the program to let it solve the equation you want. The file **datas.xml** is a good template. However, if you just want to play around with the program, skip this part.
+
+At this point, you might be curious about how to configure the program to let it solve the equation you want. However, if you just want to play around with the program, skip this part.
 
 $$lx$$ and $$ly$$ represents the rectangular area where the equation is defined.
 
@@ -43,8 +49,9 @@ The absolute tolerance of error and relative tolerance of error are specified.
 The directory of output file is given at the end.
 
 # Visualize the result
+
 The result must be stored as a vtk file, so that the output file directory must end with ".vtk".
 
 Download [Paraview](https://www.paraview.org/download/) to draw a diagram of the result. Simply load the output vtk file, and apply it. You will see a colored rectangle representing the result.
 
-### End
+# End
