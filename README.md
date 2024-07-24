@@ -1,6 +1,6 @@
 # Introduction
 
-The project aims to use Finite Element Method (FEM) to find numeric solutions for the 2D non-linear Poisson equation defined in the rectangle $$(0, 0)$$ to $$(lx, ly)$$:
+The project aims to use Finite Element Method (FEM) to find numeric solutions for the 2D non-linear Poisson equation defined in the rectangle $$(0, 0)$$ to $$(lx, ly)$$ defined in the 2D $$(x, y)$$ plane:
 
 $$\nabla\cdot\nabla u = f(u)$$
 
