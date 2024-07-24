@@ -24,13 +24,15 @@ The command may vary for different compilers. Here's the command for g++:
 
 `$ g++ -o main *.cpp`
 
-When you run the executable, give the directory to the configuration file as a command-line argument.
+However, if you use a windows or mac operating system, there are releases.
 
-`$ ./main /path/to/your_config.xml`
+When you run the executable, give the directory of the configuration file as a command-line argument.
+
+`$ ./your_executable /path/to/your_config.xml`
 
 If you just want to use the template file **data.xml**, use the command 
 
-`$ ./main datas.xml`
+`$ ./your_executable datas.xml`
 
 # Configuration
 
