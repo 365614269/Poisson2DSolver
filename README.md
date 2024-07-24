@@ -42,7 +42,7 @@ The absolute tolerance of error and relative tolerance of error are specified.
 
 The directory of output file is given at the end.
 
-###Visualize the result
+### Visualize the result
 The result must be stored as a vtk file, so that the output file directory must end with ".vtk".
 
 Download [Paraview](https://www.paraview.org/download/) to draw a diagram of the result. Simply load the output vtk file, and apply it. You will see a colored rectangle representing the result.
