@@ -1,9 +1,7 @@
 #pragma once
 
-#include <iostream>
 #include "globals.h"
 
-using namespace std;
 using Eigen::VectorXd;
 
 class Node {

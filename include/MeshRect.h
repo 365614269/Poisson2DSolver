@@ -11,7 +11,7 @@
 #include "globals.h"
 #include "rapidxml_utils.hpp"
 
-using namespace std;
+using std::vector;
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 

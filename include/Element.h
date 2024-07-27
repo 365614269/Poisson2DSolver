@@ -1,7 +1,9 @@
 #pragma once
 #include "Node.h"
 #include "globals.h"
+#include <vector>
 
+using std::vector;
 using Eigen::VectorXd;
 
 class Element {

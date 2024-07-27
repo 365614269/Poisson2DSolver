@@ -1,6 +1,6 @@
 #include "include/Node.h"
 
-using namespace std;
+using std::pair;
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
