@@ -20,11 +20,13 @@ No dependencies other than your C++ compiler is needed.
 
 To compile the code, go to the cloned directory and compile every .cpp file in the directory.
 
+However, if you use a windows or mac operating system, there are releases.
+
 The command may vary for different compilers. Here's the command for g++:
 
-`$ g++ -o main *.cpp`
+`$ g++ -O3 -Wa,-mbig-obj -o your_executable *.cpp`
 
-However, if you use a windows or mac operating system, there are releases.
+Since the program requires intense calculation, you should always compile with the highest optimization level.
 
 When you run the executable, give the directory of the configuration file as a command-line argument.
 
