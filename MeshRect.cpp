@@ -200,16 +200,6 @@ double MeshRect::delf(double x, double y) {
     return delf_expr.value();
 }
 
-double MeshRect::g(double x, double y) {
-    if (x == 0) {
-        return 1;
-    } else if (x == lx) {
-        return 2;
-    } else {
-        return 999.9;
-    }
-}
-
 double MeshRect::integratePsiDelF(Node& node1, Node& node2, double a1, double b1, double a2, double b2) {
     double diff1 = (b1 - a1) / 2;
     double avg1 = (b1 + a1) / 2;

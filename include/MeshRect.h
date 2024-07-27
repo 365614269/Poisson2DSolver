@@ -34,7 +34,6 @@ class MeshRect {
         double u(double, double);
         double f(double, double);
         double delf(double, double);
-        double g(double, double);
 
         static vector<string> split(string, string);
 
