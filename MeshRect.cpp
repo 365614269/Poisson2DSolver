@@ -260,8 +260,8 @@ double MeshRect::integrateFPsi(Node& node, double a1, double b1, double a2, doub
     return diff1 * diff2 * ans;
 }
 
-void MeshRect::output(string fileName) {
-    ofstream fout(fileName);
+void MeshRect::output() {
+    ofstream fout(output_file_dir);
 
     fout << "# vtk DataFile Version 3.0" << endl;
     fout << "2D Poisson Equation Numeric Solution" << endl;

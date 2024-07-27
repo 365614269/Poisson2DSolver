@@ -57,5 +57,5 @@ class MeshRect {
         void addDelU();
 
         bool endConditionMet();
-        void output(string);
+        void output();
 };
