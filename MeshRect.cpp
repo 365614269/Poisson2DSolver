@@ -143,7 +143,6 @@ void MeshRect::applyRightBCtoU() {
 
     for (int i = 0; i < cons.size(); i++) {
         vector<string> con = MeshRect::split(cons[i], ",");
-        cout << cons[i] << endl;
         int lb = stoi(con[0].substr(0, 3));
         int ub = stoi(con[0].substr(4, 3));
         double value = stof(con[1]);
@@ -167,7 +166,6 @@ void MeshRect::applyLeftBCtoU() {
 
     for (int i = 0; i < cons.size(); i++) {
         vector<string> con = MeshRect::split(cons[i], ",");
-        cout << cons[i] << endl;
         int lb = stoi(con[0].substr(0, 3));
         int ub = stoi(con[0].substr(4, 3));
         double value = stof(con[1]);
