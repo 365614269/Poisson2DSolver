@@ -125,7 +125,7 @@ void MeshRect::applyUpperBCtoU() {
         double value = stof(con[1]);
 
         for (int j = 0; j < upperBNodes.size(); j++) {
-            double percentage = (j / upperBNodes.size()) * 100;
+            double percentage = ((j + 0.0) / rightBNodes.size()) * 100;
             int node = upperBNodes[j];
 
             if (percentage >= lb && percentage <= ub) {
@@ -148,10 +148,11 @@ void MeshRect::applyRightBCtoU() {
         double value = stof(con[1]);
 
         for (int j = 0; j < rightBNodes.size(); j++) {
-            double percentage = (j / rightBNodes.size()) * 100;
+            double percentage = ((j + 0.0) / rightBNodes.size()) * 100;
             int node = rightBNodes[j];
 
             if (percentage >= lb && percentage <= ub) {
+                // cout << "RBNode " << node << endl;
                 this->Uv(node) = value;
                 this->BCNodes.push_back(node);
             }
@@ -171,10 +172,11 @@ void MeshRect::applyLeftBCtoU() {
         double value = stof(con[1]);
 
         for (int j = 0; j < leftBNodes.size(); j++) {
-            double percentage = (j / leftBNodes.size()) * 100;
+            double percentage = ((j + 0.0) / rightBNodes.size()) * 100;
             int node = leftBNodes[j];
 
             if (percentage >= lb && percentage <= ub) {
+                // cout << "LBNode " << node << endl;
                 this->Uv(node) = value;
                 this->BCNodes.push_back(node);
             }
@@ -195,7 +197,7 @@ void MeshRect::applyLowerBCtoU() {
         double value = stof(con[1]);
 
         for (int j = 0; j < lowerBNodes.size(); j++) {
-            double percentage = (j / lowerBNodes.size()) * 100;
+            double percentage = ((j + 0.0) / rightBNodes.size()) * 100;
             int node = lowerBNodes[j];
 
             if (percentage >= lb && percentage <= ub) {
@@ -209,6 +211,8 @@ void MeshRect::applyLowerBCtoU() {
 void MeshRect::applyBCtoDelU() {
     for (int i = 0; i < BCNodes.size(); i++) {
         int node = BCNodes[i];
+
+        // cout << node << endl;
         
         for (int i = 0; i < Nb; i++) {
             this->stiffness(node,i) = 0;
