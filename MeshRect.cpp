@@ -125,7 +125,7 @@ void MeshRect::applyUpperBCtoU() {
         double value = stof(con[1]);
 
         for (int j = 0; j < upperBNodes.size(); j++) {
-            double percentage = ((j + 0.0) / rightBNodes.size()) * 100;
+            double percentage = ((j + 0.0) / upperBNodes.size()) * 100;
             int node = upperBNodes[j];
 
             if (percentage >= lb && percentage <= ub) {
@@ -197,7 +197,7 @@ void MeshRect::applyLowerBCtoU() {
         double value = stof(con[1]);
 
         for (int j = 0; j < lowerBNodes.size(); j++) {
-            double percentage = ((j + 0.0) / rightBNodes.size()) * 100;
+            double percentage = ((j + 0.0) / upperBNodes.size()) * 100;
             int node = lowerBNodes[j];
 
             if (percentage >= lb && percentage <= ub) {
