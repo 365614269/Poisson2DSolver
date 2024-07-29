@@ -29,5 +29,7 @@ extern string f_str;
 extern string delf_str;
 extern string output_file_dir;
 
-extern string BCValues;
-extern string BCNodes;
+extern string u_AB;
+extern string u_BC;
+extern string u_CD;
+extern string u_AD;

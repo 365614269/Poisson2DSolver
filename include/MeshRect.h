@@ -26,6 +26,8 @@ class MeshRect {
         VectorXd Uv,delUv,Fv;
         expression f_expr, delf_expr;
 
+        vector<int> leftBNodes, rightBNodes, upperBNodes, lowerBNodes;
+        vector<int> BCNodes;
         double u_val;
 
         expression parse_f();
@@ -34,6 +36,11 @@ class MeshRect {
         double u(double, double);
         double f(double, double);
         double delf(double, double);
+
+        void applyUpperBCtoU();
+        void applyLowerBCtoU();
+        void applyLeftBCtoU();
+        void applyRightBCtoU();
 
         static vector<string> split(string, string);
 

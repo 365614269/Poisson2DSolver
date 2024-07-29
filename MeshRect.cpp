@@ -16,6 +16,16 @@ MeshRect::MeshRect(VectorXd& U_) {
     for (int i = 0; i < Ne; i++) {
         this->elements.push_back(Element(i));
     }
+
+    for (int i = 0; i < Nb; i++) {
+        int x = i / (Nx + 1);
+        int y = i % (Nx + 1);
+
+        if (y == 0) leftBNodes.push_back(i);
+        else if (y == Nx) rightBNodes.push_back(i);
+        if (x == 0) upperBNodes.push_back(i);
+        else if (x == Ny) lowerBNodes.push_back(i);
+    }
 }
 
 vector<string> MeshRect::split(string s, string delimiter) {
@@ -96,22 +106,111 @@ void MeshRect::calculateAF() {
 }
 
 void MeshRect::applyBCtoU() {
-    vector<string> nodes = MeshRect::split(BCNodes, ",");
-    vector<string> values = MeshRect::split(BCValues, ",");
+    this->applyLeftBCtoU();
+    this->applyRightBCtoU();
+    this->applyUpperBCtoU();
+    this->applyLowerBCtoU();
+}
 
-    for (int i = 0; i < nodes.size(); i++) {
-        int node = stoi(nodes[i]);
-        double value = stof(values[i]);
+void MeshRect::applyUpperBCtoU() {
+    if (u_AB == "") return;
 
-        this->Uv(node) = value;
+    vector<string> cons = MeshRect::split(u_AB, ";");
+
+    for (int i = 0; i < cons.size(); i++) {
+        vector<string> con = MeshRect::split(cons[i], ",");
+
+        int lb = stoi(con[0].substr(0, 3));
+        int ub = stoi(con[0].substr(4, 3));
+        double value = stof(con[1]);
+
+        for (int j = 0; j < upperBNodes.size(); j++) {
+            double percentage = (j / upperBNodes.size()) * 100;
+            int node = upperBNodes[j];
+
+            if (percentage >= lb && percentage <= ub) {
+                this->Uv(node) = value;
+                this->BCNodes.push_back(node);
+            }
+        }
+    }
+}
+
+void MeshRect::applyRightBCtoU() {
+    if (u_BC == "") return;
+
+    vector<string> cons = MeshRect::split(u_BC, ";");
+
+    for (int i = 0; i < cons.size(); i++) {
+        vector<string> con = MeshRect::split(cons[i], ",");
+        cout << cons[i] << endl;
+        int lb = stoi(con[0].substr(0, 3));
+        int ub = stoi(con[0].substr(4, 3));
+        double value = stof(con[1]);
+
+        for (int j = 0; j < rightBNodes.size(); j++) {
+            double percentage = (j / rightBNodes.size()) * 100;
+            int node = rightBNodes[j];
+
+            if (percentage >= lb && percentage <= ub) {
+                this->Uv(node) = value;
+                this->BCNodes.push_back(node);
+            }
+        }
+    }
+}
+
+void MeshRect::applyLeftBCtoU() {
+    if (u_AD == "") return;
+
+    vector<string> cons = MeshRect::split(u_AD, ";");
+
+    for (int i = 0; i < cons.size(); i++) {
+        vector<string> con = MeshRect::split(cons[i], ",");
+        cout << cons[i] << endl;
+        int lb = stoi(con[0].substr(0, 3));
+        int ub = stoi(con[0].substr(4, 3));
+        double value = stof(con[1]);
+
+        for (int j = 0; j < leftBNodes.size(); j++) {
+            double percentage = (j / leftBNodes.size()) * 100;
+            int node = leftBNodes[j];
+
+            if (percentage >= lb && percentage <= ub) {
+                this->Uv(node) = value;
+                this->BCNodes.push_back(node);
+            }
+        }
+    }
+}
+
+void MeshRect::applyLowerBCtoU() {
+    if (u_CD == "") return;
+
+    vector<string> cons = MeshRect::split(u_CD, ";");
+
+    for (int i = 0; i < cons.size(); i++) {
+        vector<string> con = MeshRect::split(cons[i], ",");
+
+        int lb = stoi(con[0].substr(0, 3));
+        int ub = stoi(con[0].substr(4, 3));
+        double value = stof(con[1]);
+
+        for (int j = 0; j < lowerBNodes.size(); j++) {
+            double percentage = (j / lowerBNodes.size()) * 100;
+            int node = lowerBNodes[j];
+
+            if (percentage >= lb && percentage <= ub) {
+                this->Uv(node) = value;
+                this->BCNodes.push_back(node);
+            }
+        }
     }
 }
 
 void MeshRect::applyBCtoDelU() {
-    vector<string> nodes = MeshRect::split(BCNodes, ",");
-
-    for (int i = 0; i < nodes.size(); i++) {
-        int node = stoi(nodes[i]);
+    for (int i = 0; i < BCNodes.size(); i++) {
+        int node = BCNodes[i];
         
         for (int i = 0; i < Nb; i++) {
             this->stiffness(node,i) = 0;
