@@ -44,7 +44,7 @@ $$lx$$ and $$ly$$ represents the rectangular area where the equation is defined.
 
 $$Nx$$ and $$Ny$$ represents the number of elements per row and column.
 
-The boundary nodes and their values are given in two strings respectively, acting as Dirichlet Boundary Condition. If a boundary node's value is not specified, it will be considered as a free node.
+The boundary conditions are specified through four lines, with line name="u_XY" and value="AAA-BBB,VAL1;CCC-DDD,VAL2". The first part "AAA-BBB,VAL1" representing the interval of the percentage AAA-BBB of nodes from X to Y set to VAL1.
 
 The initial guess function $$u_0(x, y)$$, source function $$f(u)$$ and derivative of source function $$\frac{\partial f}{\partial u}$$ are represented as a string and parsed to the program.
 
