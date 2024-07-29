@@ -93,6 +93,6 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        mesh.output(output_file_dir);
+        mesh.output();
     }
 }
