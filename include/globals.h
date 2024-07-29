@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Eigen/Dense"
+#include "../eigen/Dense"
 #include <utility>
 
 using Eigen::VectorXd;
