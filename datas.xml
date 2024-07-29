@@ -8,8 +8,10 @@
     <Data name="shape" value="rectangle"></Data>
 
     <!-- Dirichlet Boundary Conditions -->
-    <Data name="BCNodes" value="0,21,42,63,84,105,125,146,167,188,209,230"></Data>
-    <Data name="BCValues" value="1000,1000,1000,1000,1000,1000,2000,2000,2000,2000,2000,2000"></Data>
+    <Data name="u_AB" value=""></Data>
+    <Data name="u_BC" value="050-100,2.0"></Data>
+    <Data name="u_CD" value=""></Data>
+    <Data name="u_AD" value="000-050,1.0"></Data>
 
     <!-- Input Functions -->
     <Data name="guess" value="exp(-x-y)"></Data>
