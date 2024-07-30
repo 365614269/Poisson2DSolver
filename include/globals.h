@@ -31,5 +31,5 @@ extern string output_file_dir;
 
 extern string u_AB;
 extern string u_BC;
-extern string u_CD;
+extern string u_DC;
 extern string u_AD;

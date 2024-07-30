@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <MyConfig>
     <!-- Mesh Information -->
-    <Data name="lx" value="6.0"></Data>
-    <Data name="ly" value="3.0"></Data>
-    <Data name="Nx" value="50"></Data>
-    <Data name="Ny" value="25"></Data>
+    <Data name="lx" value="2.0"></Data>
+    <Data name="ly" value="1.0"></Data>
+    <Data name="Nx" value="20"></Data>
+    <Data name="Ny" value="10"></Data>
     <Data name="shape" value="rectangle"></Data>
 
     <!-- Dirichlet Boundary Conditions -->
     <Data name="u_AB" value="000-070,114514"></Data>
     <Data name="u_BC" value="000-100,114514"></Data>
-    <Data name="u_CD" value="000-070,114514"></Data>
+    <Data name="u_DC" value="000-070,114514"></Data>
     <Data name="u_AD" value="000-100,114514"></Data>
 
     <!-- Input Functions -->

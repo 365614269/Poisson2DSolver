@@ -12,7 +12,7 @@ int Nb, Ne, Nlb;
 double h1, h2;
 string shape, u0_str, f_str, delf_str;
 string BCNodes, BCValues;
-string u_AB, u_BC, u_CD, u_AD;
+string u_AB, u_BC, u_DC, u_AD;
 double abs_tol, rel_tol;
 string output_file_dir;
 
@@ -35,7 +35,7 @@ void readFile(char* fileName) {
 		else if (!strcmp(name, "Ny")) Ny = atoi(value);
         else if (!strcmp(name, "u_AB")) u_AB = value;
         else if (!strcmp(name, "u_BC")) u_BC = value;
-        else if (!strcmp(name, "u_CD")) u_CD = value;
+        else if (!strcmp(name, "u_DC")) u_DC = value;
         else if (!strcmp(name, "u_AD")) u_AD = value;
         else if (!strcmp(name, "BCNodes")) BCNodes = value;
         else if (!strcmp(name, "BCValues")) BCValues = value;

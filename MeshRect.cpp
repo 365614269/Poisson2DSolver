@@ -152,7 +152,7 @@ void MeshRect::applyRightBCtoU() {
             int node = rightBNodes[j];
 
             if (percentage >= lb && percentage <= ub) {
-                // cout << "RBNode " << node << endl;
+                // cout << "RBNode " << j << " " << node << endl;
                 this->Uv(node) = value;
                 this->BCNodes.push_back(node);
             }
@@ -172,7 +172,7 @@ void MeshRect::applyLeftBCtoU() {
         double value = stof(con[1]);
 
         for (int j = 0; j < leftBNodes.size(); j++) {
-            double percentage = ((j + 0.0) / rightBNodes.size()) * 100;
+            double percentage = ((j + 0.0) / leftBNodes.size()) * 100;
             int node = leftBNodes[j];
 
             if (percentage >= lb && percentage <= ub) {
@@ -185,9 +185,9 @@ void MeshRect::applyLeftBCtoU() {
 }
 
 void MeshRect::applyLowerBCtoU() {
-    if (u_CD == "") return;
+    if (u_DC == "") return;
 
-    vector<string> cons = MeshRect::split(u_CD, ";");
+    vector<string> cons = MeshRect::split(u_DC, ";");
 
     for (int i = 0; i < cons.size(); i++) {
         vector<string> con = MeshRect::split(cons[i], ",");
@@ -197,7 +197,7 @@ void MeshRect::applyLowerBCtoU() {
         double value = stof(con[1]);
 
         for (int j = 0; j < lowerBNodes.size(); j++) {
-            double percentage = ((j + 0.0) / upperBNodes.size()) * 100;
+            double percentage = ((j + 0.0) / lowerBNodes.size()) * 100;
             int node = lowerBNodes[j];
 
             if (percentage >= lb && percentage <= ub) {
@@ -372,7 +372,7 @@ void MeshRect::output() {
     fout << "POINTS " << Nb << " float" << endl;
 
     for (int n = 0; n < Nb; n++) {
-        fout << (n % (Nx + 1)) * h1 << ' ' << (n / (Nx + 1)) * h2 << " 2" << endl;
+        fout << (n % (Nx + 1)) * h1 << ' ' << ly - (n / (Nx + 1)) * h2 << " 2" << endl;
     }
 
     fout << endl;
