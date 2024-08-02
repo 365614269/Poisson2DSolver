@@ -379,7 +379,7 @@ void MeshRect::output() {
     fout << "CELLS " << Ne << " " << (Nlb + 1) * Ne << endl;
 
     for (int n = 0; n < Ne; n++) {
-        fout << "4 ";
+        fout << Nlb << " ";
 
         for (int i = 0; i < Nlb; i++) {
             fout << Tb(i, n) << " ";
