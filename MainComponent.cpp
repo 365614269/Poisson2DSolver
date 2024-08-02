@@ -9,6 +9,7 @@ using Eigen::MatrixXd;
 double lx, ly;
 int Nx, Ny;
 int Nb, Ne, Nlb;
+int max_iters;
 double h1, h2;
 string shape, u0_str, f_str, delf_str;
 string BCNodes, BCValues;
@@ -45,6 +46,7 @@ void readFile(char* fileName) {
 		else if (!strcmp(name, "source_derivative")) delf_str = value;
 		else if (!strcmp(name, "abs_tol")) abs_tol = atof(value);
 		else if (!strcmp(name, "rel_tol")) rel_tol = atof(value);
+        else if (!strcmp(name, "max_iters")) max_iters = atoi(value);
 		else if (!strcmp(name, "output_file_dir")) output_file_dir = value;
 	}
 
@@ -85,7 +87,7 @@ int main(int argc, char* argv[]) {
         MeshRect mesh = MeshRect(U_0);
         mesh.applyBCtoU();
 
-        for (int i = 0; i < MAX_ITERATIONS; i++) {
+        for (int i = 0; i < max_iters; i++) {
             cout << "ITERATION " << i+1 << endl;
 
             mesh.calculateAF();

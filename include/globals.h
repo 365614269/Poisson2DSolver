@@ -7,7 +7,6 @@ using Eigen::VectorXd;
 using namespace std;
 
 #define PRECISION 10
-#define MAX_ITERATIONS 10
 
 extern double lx;
 extern double ly;

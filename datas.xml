@@ -3,8 +3,8 @@
     <!-- Mesh Information -->
     <Data name="lx" value="2.0"></Data>
     <Data name="ly" value="1.0"></Data>
-    <Data name="Nx" value="20"></Data>
-    <Data name="Ny" value="10"></Data>
+    <Data name="Nx" value="50"></Data>
+    <Data name="Ny" value="25"></Data>
     <Data name="shape" value="rectangle"></Data>
 
     <!-- Dirichlet Boundary Conditions -->
@@ -21,6 +21,7 @@
     <!-- Tolerance of error -->
     <Data name="abs_tol" value="1e-4"></Data>
     <Data name="rel_tol" value="1e-4"></Data>
+    <Data name="max_iters" value="10"></Data>
     
     <!-- Output file directory -->
     <Data name="output_file_dir" value="./2DPoisson.vtk"></Data>
