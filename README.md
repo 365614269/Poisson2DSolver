@@ -32,7 +32,7 @@ When you run the executable, give the directory of the configuration file as a c
 
 `$ ./your_executable /path/to/your_config.xml`
 
-If you just want to use the template file **data.xml**, use the command 
+If you just want to use the template file **datas.xml**, use the command 
 
 `$ ./your_executable datas.xml`
 
@@ -56,6 +56,6 @@ The directory of output file is given at the end.
 
 The result must be stored as a vtk file, so that the output file directory must end with ".vtk".
 
-Download [Paraview](https://www.paraview.org/download/) to draw a diagram of the result. Simply load the output vtk file, and apply it. You will see a colored rectangle representing the result.
+Download [ParaView](https://www.paraview.org/download/) to draw a diagram of the result. Simply load the output vtk file, and apply it. You will see a colored rectangle representing the result.
 
 # End
